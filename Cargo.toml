@@ -1,0 +1,12 @@
+[package]
+name = "web3-rs"
+version = "0.1.0"
+edition = "2021"
+author = ["Russell Wong"]
+
+[dependencies]
+web3-core = { path = "./core" }
+solana = { path = "./solana" }
+
+[workspace]
+members = ["core", "solana"]
