@@ -1,5 +1,5 @@
 use {
-    super::{deserialize_public_key, types::Commitment, Context, DataSlice, Encoding},
+    super::{serde_utils::deserialize_public_key, types::Commitment, Context, DataSlice, Encoding},
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::pubkey::Pubkey,
 };

@@ -1,5 +1,8 @@
 use {
-    super::{deserialize_public_key, serialize_public_key, types::Commitment},
+    super::{
+        serde_utils::{deserialize_public_key, serialize_public_key},
+        types::Commitment,
+    },
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::pubkey::Pubkey,
     std::collections::HashMap,

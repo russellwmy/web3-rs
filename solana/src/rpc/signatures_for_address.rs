@@ -1,42 +1,41 @@
-use std::str::FromStr;
+use solana_sdk::signature::Signature;
 
 use {
-    super::{serde_utils::deserialize_public_key, types::Commitment, DataSlice, Encoding},
+    super::{serde_utils::deserialize_signature, types::Commitment},
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::pubkey::Pubkey,
+    std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetProgramAccountsConfig {
+pub struct GetSignaturesForAddressConfig {
+    #[serde(skip_serializing_if = "Option::is_none")]
+    limit: Option<u64>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    before: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    until: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
     commitment: Option<Commitment>,
-    encoding: Encoding,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    data_slice: Option<DataSlice>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    filters: Option<serde_json::Value>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    with_context: Option<DataSlice>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct GetProgramAccountsRequest {
+pub struct GetSignaturesForAddressRequest {
     public_key: Pubkey,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetProgramAccountsConfig>,
+    config: Option<GetSignaturesForAddressConfig>,
 }
 
-impl GetProgramAccountsRequest {
+impl GetSignaturesForAddressRequest {
     pub fn new(public_key: &str) -> Self {
         let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-
         Self {
             public_key,
             config: None,
         }
     }
 
-    pub fn new_with_config(public_key: &str, config: GetProgramAccountsConfig) -> Self {
+    pub fn new_with_config(public_key: &str, config: GetSignaturesForAddressConfig) -> Self {
         let public_key = Pubkey::from_str(public_key).expect("invalid public key");
 
         Self {
@@ -46,7 +45,7 @@ impl GetProgramAccountsRequest {
     }
 }
 
-impl Into<serde_json::Value> for GetProgramAccountsRequest {
+impl Into<serde_json::Value> for GetSignaturesForAddressRequest {
     fn into(self) -> serde_json::Value {
         let public_key = self.public_key.to_string();
 
@@ -57,9 +56,9 @@ impl Into<serde_json::Value> for GetProgramAccountsRequest {
     }
 }
 
-impl Into<RpcRequest> for GetProgramAccountsRequest {
+impl Into<RpcRequest> for GetSignaturesForAddressRequest {
     fn into(self) -> RpcRequest {
-        let mut request = RpcRequest::new("getProgramAccounts");
+        let mut request = RpcRequest::new("getSignaturesForAddress");
         let params = self.into();
 
         request.params(params).clone()
@@ -68,26 +67,19 @@ impl Into<RpcRequest> for GetProgramAccountsRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct ProgramAccountsValueItem {
-    lamports: u64,
-    #[serde(deserialize_with = "deserialize_public_key")]
-    owner: Pubkey,
-    data: serde_json::Value,
-    executable: bool,
-    rent_epoch: u64,
+pub struct SignaturesForAddressValue {
+    #[serde(deserialize_with = "deserialize_signature")]
+    signature: Signature,
+    slot: u64,
+    err: Option<serde_json::Value>,
+    memo: Option<String>,
+    block_time: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ProgramAccountsValue {
-    #[serde(deserialize_with = "deserialize_public_key")]
-    pubkey: Pubkey,
-    account: ProgramAccountsValueItem,
-}
+pub struct GetSignaturesForAddressResponse(Option<Vec<SignaturesForAddressValue>>);
 
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct GetProgramAccountsResponse(Option<Vec<ProgramAccountsValue>>);
-
-impl From<RpcResponse> for GetProgramAccountsResponse {
+impl From<RpcResponse> for GetSignaturesForAddressResponse {
     fn from(response: RpcResponse) -> Self {
         serde_json::from_value(response.result).unwrap()
     }

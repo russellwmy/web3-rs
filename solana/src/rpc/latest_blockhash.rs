@@ -1,5 +1,5 @@
 use {
-    super::{deserialize_hash, types::Commitment, Context},
+    super::{serde_utils::deserialize_hash, types::Commitment, Context},
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::hash::Hash,
 };

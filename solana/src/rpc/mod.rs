@@ -1,5 +1,3 @@
-use solana_sdk::hash::Hash;
-
 mod account_info;
 mod balance;
 mod block_commitment;
@@ -28,6 +26,14 @@ mod minimum_balance_for_rent_exemption;
 mod multiple_accounts;
 mod program_accounts;
 mod recent_performance_samples;
+mod serde_utils;
+mod signature_statuses;
+mod signatures_for_address;
+mod slot;
+mod slot_leader;
+mod slot_leaders;
+mod stake_activation;
+mod supply;
 mod types;
 
 pub use {
@@ -65,14 +71,17 @@ pub use {
     recent_performance_samples::{
         GetRecentPerformanceSamplesRequest, GetRecentPerformanceSamplesResponse,
     },
+    signature_statuses::{GetSignatureStatusesRequest, GetSignatureStatusesResponse},
+    signatures_for_address::{GetSignaturesForAddressRequest, GetSignaturesForAddressResponse},
+    slot::{GetSlotRequest, GetSlotResponse},
+    slot_leader::{GetSlotLeaderRequest, GetSlotLeaderResponse},
+    slot_leaders::{GetSlotLeadersRequest, GetSlotLeadersResponse},
     solana_sdk::clock::Slot,
+    stake_activation::{GetStakeActivationRequest, GetStakeActivationResponse},
+    supply::{GetSupplyRequest, GetSupplyResponse},
 };
 
-use {
-    serde::{Deserialize, Deserializer, Serializer},
-    solana_sdk::pubkey::Pubkey,
-    std::str::FromStr,
-};
+use serde::Deserialize;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "lowercase")]
@@ -100,27 +109,4 @@ pub struct BlockProductionRange {
 pub struct DataSlice {
     pub offset: usize,
     pub length: usize,
-}
-
-pub fn serialize_public_key<S>(public_key: &Option<Pubkey>, s: S) -> Result<S::Ok, S::Error>
-where
-    S: Serializer,
-{
-    s.serialize_str(public_key.unwrap().to_string().as_str())
-}
-
-pub fn deserialize_public_key<'de, D>(deserializer: D) -> Result<Pubkey, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s: String = Deserialize::deserialize(deserializer)?;
-    Ok(Pubkey::from_str(s.as_str()).unwrap())
-}
-
-pub fn deserialize_hash<'de, D>(deserializer: D) -> Result<Hash, D::Error>
-where
-    D: Deserializer<'de>,
-{
-    let s: String = Deserialize::deserialize(deserializer)?;
-    Ok(Hash::from_str(s.as_str()).unwrap())
 }
