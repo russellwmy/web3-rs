@@ -14,7 +14,7 @@ impl GetBlockTimeRequest {
 
 impl Into<serde_json::Value> for GetBlockTimeRequest {
     fn into(self) -> serde_json::Value {
-        serde_json::to_value([self.slot]).unwrap()
+        serde_json::json!([self.slot])
     }
 }
 

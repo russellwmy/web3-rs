@@ -24,7 +24,7 @@ impl GetBlockHeightRequest {
 impl Into<serde_json::Value> for GetBlockHeightRequest {
     fn into(self) -> serde_json::Value {
         match self.commitment {
-            Some(_) => serde_json::to_value([self]).unwrap(),
+            Some(_) => serde_json::json!([self]),
             None => serde_json::Value::Null,
         }
     }

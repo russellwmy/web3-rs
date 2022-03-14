@@ -32,11 +32,9 @@ impl Into<serde_json::Value> for GetFeeForMessageRequest {
     fn into(self) -> serde_json::Value {
         match self.commitment {
             Some(commitment) => {
-                let commitment = commitment.to_string();
-
-                serde_json::to_value([self.message, { commitment }]).unwrap()
+                serde_json::json!([self.message, { "commitment":commitment.to_string() }])
             }
-            None => serde_json::to_value([self.message]).unwrap(),
+            None => serde_json::json!([self.message]),
         }
     }
 }

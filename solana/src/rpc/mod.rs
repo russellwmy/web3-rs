@@ -23,6 +23,11 @@ mod inflation_reward;
 mod largest_accounts;
 mod latest_blockhash;
 mod leader_schedule;
+mod max_retransmit_slot;
+mod minimum_balance_for_rent_exemption;
+mod multiple_accounts;
+mod program_accounts;
+mod recent_performance_samples;
 mod types;
 
 pub use {
@@ -50,6 +55,15 @@ pub use {
     latest_blockhash::{GetLatestBlockhashRequest, GetLatestBlockhashResponse},
     leader_schedule::{
         GetLeaderScheduleConfig, GetLeaderScheduleRequest, GetLeaderScheduleResponse,
+    },
+    max_retransmit_slot::{GetMaxRetransmitSlotRequest, GetMaxRetransmitSlotResponse},
+    minimum_balance_for_rent_exemption::{
+        GetMinimumBalanceForRentExemptionRequest, GetMinimumBalanceForRentExemptionResponse,
+    },
+    multiple_accounts::{GetMultipleAccountsRequest, GetMultipleAccountsResponse},
+    program_accounts::{GetProgramAccountsRequest, GetProgramAccountsResponse},
+    recent_performance_samples::{
+        GetRecentPerformanceSamplesRequest, GetRecentPerformanceSamplesResponse,
     },
     solana_sdk::clock::Slot,
 };
@@ -79,6 +93,13 @@ pub struct BlockProductionRange {
     pub first_slot: u64,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub last_slot: Option<u64>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
+#[serde(rename_all = "camelCase")]
+pub struct DataSlice {
+    pub offset: usize,
+    pub length: usize,
 }
 
 pub fn serialize_public_key<S>(public_key: &Option<Pubkey>, s: S) -> Result<S::Ok, S::Error>
