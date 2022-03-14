@@ -47,7 +47,6 @@ impl Into<RpcRequest> for GetLargestAccountsRequest {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct LargestAccountsValue {
     lamports: u64,
     #[serde(deserialize_with = "deserialize_public_key")]

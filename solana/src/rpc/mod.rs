@@ -1,3 +1,5 @@
+use solana_sdk::hash::Hash;
+
 mod account_info;
 mod balance;
 mod block_commitment;
@@ -19,6 +21,8 @@ mod inflation_governor;
 mod inflation_rate;
 mod inflation_reward;
 mod largest_accounts;
+mod latest_blockhash;
+mod leader_schedule;
 mod types;
 
 pub use {
@@ -43,11 +47,15 @@ pub use {
     inflation_rate::{GetInflationRateRequest, GetInflationRateResponse},
     inflation_reward::{GetInflationRewardRequest, GetInflationRewardResponse},
     largest_accounts::{GetLargestAccountsRequest, GetLargestAccountsResponse},
+    latest_blockhash::{GetLatestBlockhashRequest, GetLatestBlockhashResponse},
+    leader_schedule::{
+        GetLeaderScheduleConfig, GetLeaderScheduleRequest, GetLeaderScheduleResponse,
+    },
     solana_sdk::clock::Slot,
 };
 
 use {
-    serde::{Deserialize, Deserializer},
+    serde::{Deserialize, Deserializer, Serializer},
     solana_sdk::pubkey::Pubkey,
     std::str::FromStr,
 };
@@ -73,15 +81,11 @@ pub struct BlockProductionRange {
     pub last_slot: Option<u64>,
 }
 
-pub fn encode_public_key(public_key: Pubkey, encoding: Encoding) -> String {
-    match encoding {
-        Encoding::Base58 => bs58::encode(public_key.to_bytes()).into_string(),
-        Encoding::Base64 => base64::encode(public_key.to_bytes()),
-        Encoding::JsonParsed => {
-            let pubkey_json = serde_json::to_value(public_key).unwrap();
-            pubkey_json.to_string()
-        }
-    }
+pub fn serialize_public_key<S>(public_key: &Option<Pubkey>, s: S) -> Result<S::Ok, S::Error>
+where
+    S: Serializer,
+{
+    s.serialize_str(public_key.unwrap().to_string().as_str())
 }
 
 pub fn deserialize_public_key<'de, D>(deserializer: D) -> Result<Pubkey, D::Error>
@@ -90,4 +94,12 @@ where
 {
     let s: String = Deserialize::deserialize(deserializer)?;
     Ok(Pubkey::from_str(s.as_str()).unwrap())
+}
+
+pub fn deserialize_hash<'de, D>(deserializer: D) -> Result<Hash, D::Error>
+where
+    D: Deserializer<'de>,
+{
+    let s: String = Deserialize::deserialize(deserializer)?;
+    Ok(Hash::from_str(s.as_str()).unwrap())
 }
