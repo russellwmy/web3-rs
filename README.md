@@ -12,11 +12,11 @@ use web3::{
 
 let provider = Provider::new_http_provider("https://api.devnet.solana.com".into());
 let client = RcpClient::new(provider);
-let request = solana::rpc::GetBlocksWithLimitRequest::new(5, 10, None).into();
+let request = solana::rpc::GetLargestAccountsRequest::new().into();
 
 match client.send(request).await {
     Ok(response) => {
-        let result = solana::rpc::GetBlocksWithLimitResponse::from(response);
+        let result = solana::rpc::GetLargestAccountsResponse::from(response);
         log::info!("{:?}", result);
     }
     Err(error) => {

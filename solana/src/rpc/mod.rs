@@ -18,6 +18,7 @@ mod identity;
 mod inflation_governor;
 mod inflation_rate;
 mod inflation_reward;
+mod largest_accounts;
 mod types;
 
 pub use {
@@ -41,6 +42,7 @@ pub use {
     inflation_governor::{GetInflationGovernorRequest, GetInflationGovernorResponse},
     inflation_rate::{GetInflationRateRequest, GetInflationRateResponse},
     inflation_reward::{GetInflationRewardRequest, GetInflationRewardResponse},
+    largest_accounts::{GetLargestAccountsRequest, GetLargestAccountsResponse},
     solana_sdk::clock::Slot,
 };
 
