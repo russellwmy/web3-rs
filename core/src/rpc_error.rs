@@ -1,3 +1,5 @@
+use std::fmt::{Display, Formatter};
+
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Error {
     pub code: i32,
@@ -28,8 +30,10 @@ impl From<reqwest::Error> for RpcError {
     }
 }
 
-impl Into<Box<dyn std::error::Error>> for RpcError {
-    fn into(self) -> Box<dyn std::error::Error> {
-        format!("{:?}", self).into()
+impl Display for RpcError {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        f.write_str(format!("{:?}", self).as_str())
     }
 }
+
+impl std::error::Error for RpcError {}
