@@ -27,3 +27,9 @@ impl From<reqwest::Error> for RpcError {
         }
     }
 }
+
+impl Into<Box<dyn std::error::Error>> for RpcError {
+    fn into(self) -> Box<dyn std::error::Error> {
+        format!("{:?}", self).into()
+    }
+}
