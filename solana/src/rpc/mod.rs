@@ -37,7 +37,7 @@ mod supply;
 mod types;
 
 pub use {
-    account_info::{GetAccountInfoRequest, GetAccountInfoResponse},
+    account_info::{AccountInfoValue, GetAccountInfoRequest, GetAccountInfoResponse},
     balance::{GetBalanceRequest, GetBalanceResponse},
     block_commitment::{GetBlockCommitmentRequest, GetBlockCommitmentResponse},
     block_height::{GetBlockHeightRequest, GetBlockHeightResponse},
