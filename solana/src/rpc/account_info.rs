@@ -68,7 +68,7 @@ pub struct AccountInfoValue {
 #[serde(rename_all = "camelCase")]
 pub struct GetAccountInfoResponse {
     pub context: Context,
-    pub value: solana_sdk::account::Account,
+    pub value: AccountInfoValue,
 }
 
 impl From<RpcResponse> for GetAccountInfoResponse {
