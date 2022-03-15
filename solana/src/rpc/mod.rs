@@ -34,6 +34,7 @@ mod slot_leader;
 mod slot_leaders;
 mod stake_activation;
 mod supply;
+mod token_account_balance;
 mod types;
 
 pub use {
@@ -79,6 +80,7 @@ pub use {
     solana_sdk::clock::Slot,
     stake_activation::{GetStakeActivationRequest, GetStakeActivationResponse},
     supply::{GetSupplyRequest, GetSupplyResponse},
+    token_account_balance::{GetTokenAccountBalanceRequest, GetTokenAccountBalanceResponse},
 };
 
 use serde::Deserialize;
