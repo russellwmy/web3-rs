@@ -1,1 +1,1 @@
-pub use {solana, web3_core as core};
+pub use {near, solana, web3_core as core};
