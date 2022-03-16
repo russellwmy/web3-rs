@@ -1,32 +1,33 @@
 use {
     super::{types::Commitment, Context},
     crate::core::{RpcRequest, RpcResponse},
+    solana_sdk::hash::Hash,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct ValidateBlockhashConfig {
-    blockhash: String,
+pub struct ValidateBlockhashRequestConfig {
+    pub blockhash: String,
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub commitment: Option<Commitment>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ValidateBlockhashRequest {
-    blockhash: String,
+    blockhash: Hash,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<ValidateBlockhashConfig>,
+    config: Option<ValidateBlockhashRequestConfig>,
 }
 
 impl ValidateBlockhashRequest {
-    pub fn new(blockhash: &str) -> Self {
+    pub fn new(blockhash: Hash) -> Self {
         Self {
-            blockhash: blockhash.to_owned(),
+            blockhash,
             config: None,
         }
     }
-    pub fn new_with_config(blockhash: &str, config: ValidateBlockhashConfig) -> Self {
+    pub fn new_with_config(blockhash: Hash, config: ValidateBlockhashRequestConfig) -> Self {
         Self {
-            blockhash: blockhash.to_owned(),
+            blockhash,
             config: Some(config),
         }
     }
@@ -34,9 +35,11 @@ impl ValidateBlockhashRequest {
 
 impl Into<serde_json::Value> for ValidateBlockhashRequest {
     fn into(self) -> serde_json::Value {
+        let blockhash = self.blockhash.to_string();
+
         match self.config {
-            Some(_) => serde_json::json!([self.blockhash, self.config]),
-            None => serde_json::json!([self.blockhash]),
+            Some(_) => serde_json::json!([blockhash, self.config]),
+            None => serde_json::json!([blockhash]),
         }
     }
 }
@@ -52,8 +55,8 @@ impl Into<RpcRequest> for ValidateBlockhashRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ValidateBlockhashResponse {
-    context: Context,
-    value: bool,
+    pub context: Context,
+    pub value: bool,
 }
 
 impl From<RpcResponse> for ValidateBlockhashResponse {

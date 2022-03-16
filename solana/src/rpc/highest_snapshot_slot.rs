@@ -1,7 +1,6 @@
 use crate::core::{RpcRequest, RpcResponse};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetHighestSnapshotSlotRequest {}
 
 impl GetHighestSnapshotSlotRequest {
@@ -27,8 +26,8 @@ impl Into<RpcRequest> for GetHighestSnapshotSlotRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetHighestSnapshotSlotResponse {
-    full: u64,
-    incremental: Option<u64>,
+    pub full: u64,
+    pub incremental: Option<u64>,
 }
 
 impl From<RpcResponse> for GetHighestSnapshotSlotResponse {

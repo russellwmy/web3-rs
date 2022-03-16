@@ -27,10 +27,10 @@ impl Into<RpcRequest> for GetInflationRateRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetInflationRateResponse {
-    total: f64,
-    validator: f64,
-    foundation: f64,
-    epoch: f64,
+    pub total: f64,
+    pub validator: f64,
+    pub foundation: f64,
+    pub epoch: f64,
 }
 
 impl From<RpcResponse> for GetInflationRateResponse {

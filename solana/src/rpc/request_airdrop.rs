@@ -6,31 +6,31 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct RequestAirdropConfig {
+pub struct RequestAirdropRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub commitment: Option<Commitment>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct RequestAirdropRequest {
-    public_key: Pubkey,
-    lamports: u64,
+    pub public_key: Pubkey,
+    pub lamports: u64,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<RequestAirdropConfig>,
+    pub config: Option<RequestAirdropRequestConfig>,
 }
 
 impl RequestAirdropRequest {
-    pub fn new(public_key: &str, lamports: u64) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-
+    pub fn new(public_key: Pubkey, lamports: u64) -> Self {
         Self {
             public_key,
             lamports,
             config: None,
         }
     }
-    pub fn new_with_config(public_key: &str, lamports: u64, config: RequestAirdropConfig) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-
+    pub fn new_with_config(
+        public_key: Pubkey,
+        lamports: u64,
+        config: RequestAirdropRequestConfig,
+    ) -> Self {
         Self {
             public_key,
             lamports,

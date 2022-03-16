@@ -27,11 +27,11 @@ impl Into<RpcRequest> for GetEpochScheduleRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetEpochScheduleResponse {
-    slots_per_epoch: u64,
-    leader_schedule_slot_offset: u64,
-    warmup: bool,
-    first_normal_epoch: u64,
-    first_normal_slot: u64,
+    pub slots_per_epoch: u64,
+    pub leader_schedule_slot_offset: u64,
+    pub warmup: bool,
+    pub first_normal_epoch: u64,
+    pub first_normal_slot: u64,
 }
 
 impl From<RpcResponse> for GetEpochScheduleResponse {

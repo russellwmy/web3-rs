@@ -4,26 +4,34 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+pub struct GetInflationGovernorRequestConfig {
+    pub commitment: Commitment,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetInflationGovernorRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub config: Option<GetInflationGovernorRequestConfig>,
 }
 
 impl GetInflationGovernorRequest {
     pub fn new() -> Self {
-        Self { commitment: None }
+        Self { config: None }
     }
-    pub fn new_with_commitment(commitment: Commitment) -> Self {
+
+    pub fn new_with_config(config: GetInflationGovernorRequestConfig) -> Self {
         Self {
-            commitment: Some(commitment),
+            config: Some(config),
         }
     }
 }
 
 impl Into<serde_json::Value> for GetInflationGovernorRequest {
     fn into(self) -> serde_json::Value {
-        serde_json::Value::Null
+        match self.config {
+            Some(config) => serde_json::json!([config]),
+            None => serde_json::Value::Null,
+        }
     }
 }
 
@@ -39,11 +47,11 @@ impl Into<RpcRequest> for GetInflationGovernorRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetInflationGovernorResponse {
-    initial: f64,
-    terminal: f64,
-    taper: f64,
-    foundation: f64,
-    foundation_term: f64,
+    pub initial: f64,
+    pub terminal: f64,
+    pub taper: f64,
+    pub foundation: f64,
+    pub foundation_term: f64,
 }
 
 impl From<RpcResponse> for GetInflationGovernorResponse {

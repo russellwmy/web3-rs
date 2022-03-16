@@ -7,8 +7,8 @@ use {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSlotLeadersRequest {
-    start_slot: u64,
-    limit: u64,
+    pub start_slot: u64,
+    pub limit: u64,
 }
 
 impl GetSlotLeadersRequest {

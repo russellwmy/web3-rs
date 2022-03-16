@@ -5,7 +5,6 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetIdentityRequest {}
 
 impl GetIdentityRequest {
@@ -32,7 +31,7 @@ impl Into<RpcRequest> for GetIdentityRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetIdentityResponse {
     #[serde(deserialize_with = "deserialize_public_key")]
-    identity: Pubkey,
+    pub identity: Pubkey,
 }
 
 impl From<RpcResponse> for GetIdentityResponse {

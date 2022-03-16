@@ -8,7 +8,7 @@ use {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct BlockProductionRequestConfig {
+pub struct GetBlockProductionRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub commitment: Option<Commitment>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -21,20 +21,20 @@ pub struct BlockProductionRequestConfig {
 #[serde(rename_all = "camelCase")]
 pub struct GetBlockProductionRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<BlockProductionRequestConfig>,
+    pub config: Option<GetBlockProductionRequestConfig>,
 }
 
 impl GetBlockProductionRequest {
     pub fn new() -> Self {
         Self {
-            config: Some(BlockProductionRequestConfig {
+            config: Some(GetBlockProductionRequestConfig {
                 commitment: None,
                 range: None,
                 identity: None,
             }),
         }
     }
-    pub fn new_with_config(config: BlockProductionRequestConfig) -> Self {
+    pub fn new_with_config(config: GetBlockProductionRequestConfig) -> Self {
         Self {
             config: Some(config),
         }
@@ -59,15 +59,15 @@ impl Into<RpcRequest> for GetBlockProductionRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct BlockProductionValue {
-    by_identity: HashMap<String, (usize, usize)>,
-    range: BlockProductionRange,
+    pub by_identity: HashMap<String, (usize, usize)>,
+    pub range: BlockProductionRange,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetBlockProductionResponse {
-    context: Context,
-    value: BlockProductionValue,
+    pub context: Context,
+    pub value: BlockProductionValue,
 }
 
 impl From<RpcResponse> for GetBlockProductionResponse {

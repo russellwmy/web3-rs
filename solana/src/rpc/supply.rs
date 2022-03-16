@@ -1,22 +1,20 @@
-use std::str::FromStr;
-
 use {
     super::{types::Commitment, Context},
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::pubkey::Pubkey,
+    std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetSupplyRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub commitment: Option<Commitment>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    exclude_non_circulating_accounts_list: Option<bool>,
+    pub exclude_non_circulating_accounts_list: Option<bool>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetSupplyRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
     config: Option<GetSupplyRequestConfig>,
@@ -55,18 +53,19 @@ impl Into<RpcRequest> for GetSupplyRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SupplyResponseValue {
-    total: u64,
-    circulating: u64,
-    non_circulating: u64,
-    non_circulating_accounts: Vec<Pubkey>,
+    pub total: u64,
+    pub circulating: u64,
+    pub non_circulating: u64,
+    pub non_circulating_accounts: Vec<Pubkey>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSupplyResponse {
-    context: Context,
-    value: SupplyResponseValue,
+    pub context: Context,
+    pub value: SupplyResponseValue,
 }
 
+// TODO: Refactor this function
 impl From<RpcResponse> for GetSupplyResponse {
     fn from(response: RpcResponse) -> Self {
         let context = response.result["context"].clone();

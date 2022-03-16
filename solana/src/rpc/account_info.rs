@@ -7,7 +7,7 @@ use {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct AccountInfoRequestConfig {
+pub struct GetAccountInfoRequestConfig {
     pub encoding: Encoding,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub commitment: Option<Commitment>,
@@ -18,22 +18,22 @@ pub struct AccountInfoRequestConfig {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetAccountInfoRequest {
-    public_key: Pubkey,
-    config: AccountInfoRequestConfig,
+    pub public_key: Pubkey,
+    pub config: GetAccountInfoRequestConfig,
 }
 
 impl GetAccountInfoRequest {
     pub fn new(public_key: Pubkey) -> Self {
         Self {
             public_key,
-            config: AccountInfoRequestConfig {
+            config: GetAccountInfoRequestConfig {
                 encoding: Encoding::Base58,
                 commitment: None,
                 data_slice: None,
             },
         }
     }
-    pub fn new_with_config(public_key: Pubkey, config: AccountInfoRequestConfig) -> Self {
+    pub fn new_with_config(public_key: Pubkey, config: GetAccountInfoRequestConfig) -> Self {
         Self { public_key, config }
     }
 }
@@ -56,19 +56,19 @@ impl Into<RpcRequest> for GetAccountInfoRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct AccountInfoValue {
-    data: serde_json::Value,
-    executable: bool,
-    lamports: u64,
+    pub data: serde_json::Value,
+    pub executable: bool,
+    pub lamports: u64,
     #[serde(deserialize_with = "deserialize_public_key")]
-    owner: Pubkey,
-    rent_epoch: u64,
+    pub owner: Pubkey,
+    pub rent_epoch: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetAccountInfoRsponse {
-    context: Context,
-    value: AccountInfoValue,
+    pub context: Context,
+    pub value: AccountInfoValue,
 }
 
 impl From<RpcResponse> for GetAccountInfoRsponse {

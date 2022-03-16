@@ -7,7 +7,7 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct SimulateTransactionConfig {
+pub struct SimulateTransactionRequestConfig {
     pub skip_preflight: bool,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub preflight_commitment: Option<Commitment>,
@@ -18,9 +18,9 @@ pub struct SimulateTransactionConfig {
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SimulateTransactionRequest {
-    transaction: Transaction,
+    pub transaction: Transaction,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<SimulateTransactionConfig>,
+    pub config: Option<SimulateTransactionRequestConfig>,
 }
 
 impl SimulateTransactionRequest {
@@ -30,7 +30,10 @@ impl SimulateTransactionRequest {
             config: None,
         }
     }
-    pub fn new_with_config(transaction: Transaction, config: SimulateTransactionConfig) -> Self {
+    pub fn new_with_config(
+        transaction: Transaction,
+        config: SimulateTransactionRequestConfig,
+    ) -> Self {
         Self {
             transaction,
             config: Some(config),
@@ -61,6 +64,12 @@ impl Into<RpcRequest> for SimulateTransactionRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct SimulateTransactionResponse(Signature);
+
+impl Into<Signature> for SimulateTransactionResponse {
+    fn into(self) -> Signature {
+        self.0
+    }
+}
 
 impl From<RpcResponse> for SimulateTransactionResponse {
     fn from(response: RpcResponse) -> Self {

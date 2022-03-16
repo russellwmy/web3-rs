@@ -1,10 +1,8 @@
-use solana_sdk::account::Account;
-
 use {
     super::{types::Commitment, Context, DataSlice, Encoding},
     crate::core::{RpcRequest, RpcResponse},
+    solana_sdk::account::Account,
     solana_sdk::pubkey::Pubkey,
-    std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
@@ -15,29 +13,26 @@ pub enum AccountType {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetTokenAccountsByDelegateConfig {
+pub struct GetTokenAccountsByDelegateRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
-    encoding: Encoding,
+    pub commitment: Option<Commitment>,
+    pub encoding: Encoding,
     #[serde(skip_serializing_if = "Option::is_none")]
-    data_slice: Option<DataSlice>,
+    pub data_slice: Option<DataSlice>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetTokenAccountsByDelegateRequest {
-    public_key: Pubkey,
-    account_type: AccountType,
-    account_key: Pubkey,
+    pub public_key: Pubkey,
+    pub account_type: AccountType,
+    pub account_key: Pubkey,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetTokenAccountsByDelegateConfig>,
+    pub config: Option<GetTokenAccountsByDelegateRequestConfig>,
 }
 
 impl GetTokenAccountsByDelegateRequest {
-    pub fn new_mint(public_key: &str, mint_account_key: &str) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-        let account_key = Pubkey::from_str(mint_account_key).expect("invalid public key");
-
+    pub fn new_mint(public_key: Pubkey, account_key: Pubkey) -> Self {
         Self {
             public_key,
             account_key,
@@ -47,13 +42,10 @@ impl GetTokenAccountsByDelegateRequest {
     }
 
     pub fn new_mint_with_config(
-        public_key: &str,
-        mint_account_key: &str,
-        config: GetTokenAccountsByDelegateConfig,
+        public_key: Pubkey,
+        account_key: Pubkey,
+        config: GetTokenAccountsByDelegateRequestConfig,
     ) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-        let account_key = Pubkey::from_str(mint_account_key).expect("invalid public key");
-
         Self {
             public_key,
             account_key,
@@ -62,10 +54,7 @@ impl GetTokenAccountsByDelegateRequest {
         }
     }
 
-    pub fn new_program(public_key: &str, program_account_key: &str) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-        let account_key = Pubkey::from_str(program_account_key).expect("invalid public key");
-
+    pub fn new_program(public_key: Pubkey, account_key: Pubkey) -> Self {
         Self {
             public_key,
             account_key,
@@ -75,13 +64,10 @@ impl GetTokenAccountsByDelegateRequest {
     }
 
     pub fn new_program_with_config(
-        public_key: &str,
-        program_account_key: &str,
-        config: GetTokenAccountsByDelegateConfig,
+        public_key: Pubkey,
+        account_key: Pubkey,
+        config: GetTokenAccountsByDelegateRequestConfig,
     ) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-        let account_key = Pubkey::from_str(program_account_key).expect("invalid public key");
-
         Self {
             public_key,
             account_key,
@@ -126,14 +112,14 @@ impl Into<RpcRequest> for GetTokenAccountsByDelegateRequest {
 #[serde(rename_all = "camelCase")]
 pub struct TokenAccountsByDelegateResponseValue {
     #[serde(rename = "pubkey")]
-    public_key: Pubkey,
-    account: Account,
+    pub public_key: Pubkey,
+    pub account: Account,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetTokenAccountsByDelegateResponse {
-    context: Context,
-    value: Option<Vec<TokenAccountsByDelegateResponseValue>>,
+    pub context: Context,
+    pub value: Option<Vec<TokenAccountsByDelegateResponseValue>>,
 }
 
 impl From<RpcResponse> for GetTokenAccountsByDelegateResponse {

@@ -1,7 +1,6 @@
 use crate::core::{RpcRequest, RpcResponse};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetHealthRequest {}
 
 impl GetHealthRequest {
@@ -27,9 +26,9 @@ impl Into<RpcRequest> for GetHealthRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ErrorValue {
-    code: i32,
-    message: String,
-    data: serde_json::Value,
+    pub code: i32,
+    pub message: String,
+    pub data: serde_json::Value,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

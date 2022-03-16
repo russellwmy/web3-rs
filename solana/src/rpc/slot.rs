@@ -4,27 +4,32 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GetSlotRequestConfig {
+    commitment: Commitment,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSlotRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    config: Option<GetSlotRequestConfig>,
 }
 
 impl GetSlotRequest {
     pub fn new() -> Self {
-        Self { commitment: None }
+        Self { config: None }
     }
 
-    pub fn new_with_commitment(commitment: Commitment) -> Self {
+    pub fn new_with_config(config: GetSlotRequestConfig) -> Self {
         Self {
-            commitment: Some(commitment),
+            config: Some(config),
         }
     }
 }
 
 impl Into<serde_json::Value> for GetSlotRequest {
     fn into(self) -> serde_json::Value {
-        match self.commitment {
-            Some(commitment) => serde_json::json!([commitment]),
+        match self.config {
+            Some(config) => serde_json::json!([config.commitment]),
             None => serde_json::Value::Null,
         }
     }

@@ -4,40 +4,38 @@ use {
     super::{serde_utils::deserialize_signature, types::Commitment},
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::pubkey::Pubkey,
-    std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct GetSignaturesForAddressConfig {
+pub struct GetSignaturesForAddressRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
-    limit: Option<u64>,
+    pub limit: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    before: Option<String>,
+    pub before: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    until: Option<String>,
+    pub until: Option<String>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub commitment: Option<Commitment>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSignaturesForAddressRequest {
     public_key: Pubkey,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetSignaturesForAddressConfig>,
+    config: Option<GetSignaturesForAddressRequestConfig>,
 }
 
 impl GetSignaturesForAddressRequest {
-    pub fn new(public_key: &str) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
+    pub fn new(public_key: Pubkey) -> Self {
         Self {
             public_key,
             config: None,
         }
     }
 
-    pub fn new_with_config(public_key: &str, config: GetSignaturesForAddressConfig) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-
+    pub fn new_with_config(
+        public_key: Pubkey,
+        config: GetSignaturesForAddressRequestConfig,
+    ) -> Self {
         Self {
             public_key,
             config: Some(config),
@@ -69,11 +67,12 @@ impl Into<RpcRequest> for GetSignaturesForAddressRequest {
 #[serde(rename_all = "camelCase")]
 pub struct SignaturesForAddressValue {
     #[serde(deserialize_with = "deserialize_signature")]
-    signature: Signature,
-    slot: u64,
-    err: Option<serde_json::Value>,
-    memo: Option<String>,
-    block_time: Option<u64>,
+    pub signature: Signature,
+    pub slot: u64,
+    // TODO: Convert this to a struct
+    pub err: Option<serde_json::Value>,
+    pub memo: Option<String>,
+    pub block_time: Option<u64>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

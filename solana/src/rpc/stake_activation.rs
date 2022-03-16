@@ -2,37 +2,31 @@ use {
     super::types::Commitment,
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::pubkey::Pubkey,
-    std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct GetStakeActivationConfig {
+pub struct GetStakeActivationRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub commitment: Option<Commitment>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    epoch: Option<u64>,
+    pub epoch: Option<u64>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetStakeActivationRequest {
     public_key: Pubkey,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetStakeActivationConfig>,
+    config: Option<GetStakeActivationRequestConfig>,
 }
 
 impl GetStakeActivationRequest {
-    pub fn new(public_key: &str) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-
+    pub fn new(public_key: Pubkey) -> Self {
         Self {
             public_key,
             config: None,
         }
     }
 
-    pub fn new_with_config(public_key: &str, config: GetStakeActivationConfig) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-
+    pub fn new_with_config(public_key: Pubkey, config: GetStakeActivationRequestConfig) -> Self {
         Self {
             public_key,
             config: Some(config),
@@ -62,9 +56,10 @@ impl Into<RpcRequest> for GetStakeActivationRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetStakeActivationResponse {
-    state: String,
-    active: u64,
-    inactive: u64,
+    // TODO: Convert to an enum
+    pub state: String,
+    pub active: u64,
+    pub inactive: u64,
 }
 
 impl From<RpcResponse> for GetStakeActivationResponse {

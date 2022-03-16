@@ -9,19 +9,20 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct GetLeaderScheduleConfig {
+pub struct GetLeaderScheduleRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub commitment: Option<Commitment>,
     #[serde(skip_serializing_if = "Option::is_none")]
     #[serde(serialize_with = "serialize_public_key")]
     pub identity: Option<Pubkey>,
 }
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetLeaderScheduleRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
-    slot: Option<u64>,
+    pub slot: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetLeaderScheduleConfig>,
+    pub config: Option<GetLeaderScheduleRequestConfig>,
 }
 
 impl GetLeaderScheduleRequest {
@@ -31,13 +32,13 @@ impl GetLeaderScheduleRequest {
             config: None,
         }
     }
-    pub fn new_with_slot_and_config(slot: u64, config: GetLeaderScheduleConfig) -> Self {
+    pub fn new_with_slot_and_config(slot: u64, config: GetLeaderScheduleRequestConfig) -> Self {
         Self {
             slot: Some(slot),
             config: Some(config),
         }
     }
-    pub fn new_with_config(config: GetLeaderScheduleConfig) -> Self {
+    pub fn new_with_config(config: GetLeaderScheduleRequestConfig) -> Self {
         Self {
             slot: None,
             config: Some(config),
@@ -67,9 +68,9 @@ impl Into<RpcRequest> for GetLeaderScheduleRequest {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct LeaderScheduleValue {
-    lamports: u64,
+    pub lamports: u64,
     #[serde(deserialize_with = "deserialize_public_key")]
-    address: Pubkey,
+    pub address: Pubkey,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

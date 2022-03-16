@@ -1,30 +1,35 @@
 use {
     super::types::Commitment,
     crate::core::{RpcRequest, RpcResponse},
+    solana_sdk::pubkey::Pubkey,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct GetInflationRewardConfig {
+pub struct GetInflationRewardRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub commitment: Option<Commitment>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    epoch: Option<u64>,
+    pub epoch: Option<u64>,
 }
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetInflationRewardRequest {
-    addresses: Vec<String>,
+    pub addresses: Vec<Pubkey>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetInflationRewardConfig>,
+    pub config: Option<GetInflationRewardRequestConfig>,
 }
 
 impl GetInflationRewardRequest {
-    pub fn new(addresses: Vec<String>) -> Self {
+    pub fn new(addresses: Vec<Pubkey>) -> Self {
         Self {
             addresses,
             config: None,
         }
     }
-    pub fn new_with_config(addresses: Vec<String>, config: GetInflationRewardConfig) -> Self {
+    pub fn new_with_config(
+        addresses: Vec<Pubkey>,
+        config: GetInflationRewardRequestConfig,
+    ) -> Self {
         Self {
             addresses,
             config: Some(config),
@@ -34,9 +39,15 @@ impl GetInflationRewardRequest {
 
 impl Into<serde_json::Value> for GetInflationRewardRequest {
     fn into(self) -> serde_json::Value {
+        let addresses = self
+            .addresses
+            .iter()
+            .map(|o| o.to_string())
+            .collect::<Vec<String>>();
+
         match self.config {
-            Some(config) => serde_json::json!([self.addresses, config]),
-            None => serde_json::json!([self.addresses]),
+            Some(config) => serde_json::json!([addresses, config]),
+            None => serde_json::json!([addresses]),
         }
     }
 }
@@ -53,11 +64,11 @@ impl Into<RpcRequest> for GetInflationRewardRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct InflationRewardValue {
-    epoch: f64,
-    effective_slot: f64,
-    amount: f64,
-    post_balance: f64,
-    commission: Option<u8>,
+    pub epoch: f64,
+    pub effective_slot: f64,
+    pub amount: f64,
+    pub post_balance: f64,
+    pub commission: Option<u8>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

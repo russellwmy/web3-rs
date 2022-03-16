@@ -42,6 +42,7 @@ mod token_account_balance;
 mod token_accounts_by_delegate;
 mod token_accounts_by_owner;
 mod token_largest_accounts;
+mod token_supply;
 mod transaction;
 mod types;
 mod validate_blockhash;
@@ -49,62 +50,109 @@ mod version;
 mod vote_accounts;
 
 pub use {
-    account_info::{GetAccountInfoRequest, GetAccountInfoRsponse},
-    balance::{GetBalanceRequest, GetBalanceResponse},
+    account_info::{GetAccountInfoRequest, GetAccountInfoRequestConfig, GetAccountInfoRsponse},
+    balance::{GetBalanceRequest, GetBalanceRequestConfig, GetBalanceResponse},
     block_commitment::{GetBlockCommitmentRequest, GetBlockCommitmentResponse},
-    block_height::{GetBlockHeightRequest, GetBlockHeightResponse},
-    block_production::{GetBlockProductionRequest, GetBlockProductionResponse},
+    block_height::{GetBlockHeightRequest, GetBlockHeightRequestConfig, GetBlockHeightResponse},
+    block_production::{
+        GetBlockProductionRequest, GetBlockProductionRequestConfig, GetBlockProductionResponse,
+    },
     block_time::{GetBlockTimeRequest, GetBlockTimeResponse},
-    blocks::{GetBlocksRequest, GetBlocksResponse},
-    blocks_with_limit::{GetBlocksWithLimitRequest, GetBlocksWithLimitResponse},
+    blocks::{GetBlocksRequest, GetBlocksRequestConfig, GetBlocksResponse},
+    blocks_with_limit::{
+        GetBlocksWithLimitRequest, GetBlocksWithLimitRequestConfig, GetBlocksWithLimitResponse,
+    },
     cluster_nodes::{GetClusterNodesRequest, GetClusterNodesResponse},
-    epoch_info::{GetEpochInfoRequest, GetEpochInfoResponse},
+    epoch_info::{GetEpochInfoRequest, GetEpochInfoRequestConfig, GetEpochInfoResponse},
     epoch_schedule::{GetEpochScheduleRequest, GetEpochScheduleResponse},
-    fee_for_message::{GetFeeForMessageRequest, GetFeeForMessageResponse},
+    fee_for_message::{
+        GetFeeForMessageRequest, GetFeeForMessageRequestConfig, GetFeeForMessageResponse,
+    },
     first_available_block::{GetFirstAvailableBlockRequest, GetFirstAvailableBlockResponse},
     genesis_hash::{GetGenesisHashRequest, GetGenesisHashResponse},
     health::{GetHealthRequest, GetHealthResponse},
     highest_snapshot_slot::{GetHighestSnapshotSlotRequest, GetHighestSnapshotSlotResponse},
     identity::{GetIdentityRequest, GetIdentityResponse},
-    inflation_governor::{GetInflationGovernorRequest, GetInflationGovernorResponse},
+    inflation_governor::{
+        GetInflationGovernorRequest, GetInflationGovernorRequestConfig,
+        GetInflationGovernorResponse,
+    },
     inflation_rate::{GetInflationRateRequest, GetInflationRateResponse},
-    inflation_reward::{GetInflationRewardRequest, GetInflationRewardResponse},
-    largest_accounts::{GetLargestAccountsRequest, GetLargestAccountsResponse},
-    latest_blockhash::{GetLatestBlockhashRequest, GetLatestBlockhashResponse},
+    inflation_reward::{
+        GetInflationRewardRequest, GetInflationRewardRequestConfig, GetInflationRewardResponse,
+    },
+    largest_accounts::{
+        GetLargestAccountsRequest, GetLargestAccountsRequestConfig, GetLargestAccountsResponse,
+    },
+    latest_blockhash::{
+        GetLatestBlockhashRequest, GetLatestBlockhashRequestConfig, GetLatestBlockhashResponse,
+    },
     leader_schedule::{
-        GetLeaderScheduleConfig, GetLeaderScheduleRequest, GetLeaderScheduleResponse,
+        GetLeaderScheduleRequest, GetLeaderScheduleRequestConfig, GetLeaderScheduleResponse,
     },
     max_retransmit_slot::{GetMaxRetransmitSlotRequest, GetMaxRetransmitSlotResponse},
     minimum_balance_for_rent_exemption::{
-        GetMinimumBalanceForRentExemptionRequest, GetMinimumBalanceForRentExemptionResponse,
+        GetMinimumBalanceForRentExemptionRequest, GetMinimumBalanceForRentExemptionRequestConfig,
+        GetMinimumBalanceForRentExemptionResponse,
     },
     minimum_ledger_slot::{MinimumLedgerSlotRequest, MinimumLedgerSlotResponse},
-    multiple_accounts::{GetMultipleAccountsRequest, GetMultipleAccountsResponse},
-    program_accounts::{GetProgramAccountsRequest, GetProgramAccountsResponse},
+    multiple_accounts::{
+        GetMultipleAccountsRequest, GetMultipleAccountsRequestConfig, GetMultipleAccountsResponse,
+    },
+    program_accounts::{
+        GetProgramAccountsRequest, GetProgramAccountsRequestConfig, GetProgramAccountsResponse,
+    },
     recent_performance_samples::{
-        GetRecentPerformanceSamplesRequest, GetRecentPerformanceSamplesResponse,
+        GetRecentPerformanceSamplesRequest, GetRecentPerformanceSamplesRequestConfig,
+        GetRecentPerformanceSamplesResponse,
     },
-    request_airdrop::{RequestAirdropRequest, RequestAirdropResponse},
-    send_transaction::{SendTransactionRequest, SendTransactionResponse},
-    signature_statuses::{GetSignatureStatusesRequest, GetSignatureStatusesResponse},
-    signatures_for_address::{GetSignaturesForAddressRequest, GetSignaturesForAddressResponse},
-    simulate_transaction::{SimulateTransactionRequest, SimulateTransactionResponse},
-    slot::{GetSlotRequest, GetSlotResponse},
-    slot_leader::{GetSlotLeaderRequest, GetSlotLeaderResponse},
+    request_airdrop::{RequestAirdropRequest, RequestAirdropRequestConfig, RequestAirdropResponse},
+    send_transaction::{
+        SendTransactionRequest, SendTransactionRequestConfig, SendTransactionResponse,
+    },
+    signature_statuses::{
+        GetSignatureStatusesRequest, GetSignatureStatusesRequestConfig,
+        GetSignatureStatusesResponse,
+    },
+    signatures_for_address::{
+        GetSignaturesForAddressRequest, GetSignaturesForAddressRequestConfig,
+        GetSignaturesForAddressResponse,
+    },
+    simulate_transaction::{
+        SimulateTransactionRequest, SimulateTransactionRequestConfig, SimulateTransactionResponse,
+    },
+    slot::{GetSlotRequest, GetSlotRequestConfig, GetSlotResponse},
+    slot_leader::{GetSlotLeaderRequest, GetSlotLeaderRequestConfig, GetSlotLeaderResponse},
     slot_leaders::{GetSlotLeadersRequest, GetSlotLeadersResponse},
-    solana_sdk::clock::Slot,
-    stake_activation::{GetStakeActivationRequest, GetStakeActivationResponse},
-    supply::{GetSupplyRequest, GetSupplyResponse},
-    token_account_balance::{GetTokenAccountBalanceRequest, GetTokenAccountBalanceResponse},
-    token_accounts_by_delegate::{
-        GetTokenAccountsByDelegateRequest, GetTokenAccountsByDelegateResponse,
+    stake_activation::{
+        GetStakeActivationRequest, GetStakeActivationRequestConfig, GetStakeActivationResponse,
     },
-    token_accounts_by_owner::{GetTokenAccountsByOwnerRequest, GetTokenAccountsByOwnerResponse},
-    token_largest_accounts::{GetTokenLargestAccountsRequest, GetTokenLargestAccountsResponse},
-    transaction::{GetTransactionRequest, GetTransactionResponse},
-    validate_blockhash::{ValidateBlockhashRequest, ValidateBlockhashResponse},
+    supply::{GetSupplyRequest, GetSupplyRequestConfig, GetSupplyResponse},
+    token_account_balance::{
+        GetTokenAccountBalanceRequest, GetTokenAccountBalanceRequestConfig,
+        GetTokenAccountBalanceResponse,
+    },
+    token_accounts_by_delegate::{
+        GetTokenAccountsByDelegateRequest, GetTokenAccountsByDelegateRequestConfig,
+        GetTokenAccountsByDelegateResponse,
+    },
+    token_accounts_by_owner::{
+        GetTokenAccountsByOwnerRequest, GetTokenAccountsByOwnerRequestConfig,
+        GetTokenAccountsByOwnerResponse,
+    },
+    token_largest_accounts::{
+        GetTokenLargestAccountsRequest, GetTokenLargestAccountsRequestConfig,
+        GetTokenLargestAccountsResponse,
+    },
+    token_supply::{GetTokenSupplyRequest, GetTokenSupplyRequestConfig, GetTokenSupplyResponse},
+    transaction::{GetTransactionRequest, GetTransactionRequestConfig, GetTransactionResponse},
+    validate_blockhash::{
+        ValidateBlockhashRequest, ValidateBlockhashRequestConfig, ValidateBlockhashResponse,
+    },
     version::{GetVersionRequest, GetVersionResponse},
-    vote_accounts::{GetVoteAccountsRequest, GetVoteAccountsResponse},
+    vote_accounts::{
+        GetVoteAccountsRequest, GetVoteAccountsRequestConfig, GetVoteAccountsResponse,
+    },
 };
 
 use serde::Deserialize;
@@ -119,7 +167,7 @@ pub enum Encoding {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Context {
-    slot: Slot,
+    slot: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

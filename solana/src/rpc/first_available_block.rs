@@ -1,7 +1,6 @@
 use crate::core::{RpcRequest, RpcResponse};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetFirstAvailableBlockRequest {}
 
 impl GetFirstAvailableBlockRequest {

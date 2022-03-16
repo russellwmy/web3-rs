@@ -5,9 +5,8 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetBlockCommitmentRequest {
-    slot: u64,
+    pub slot: u64,
 }
 
 impl GetBlockCommitmentRequest {
@@ -34,8 +33,8 @@ impl Into<RpcRequest> for GetBlockCommitmentRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetBlockCommitmentResponse {
-    commitment: Option<BlockCommitmentArray>,
-    total_stake: u64,
+    pub commitment: Option<BlockCommitmentArray>,
+    pub total_stake: u64,
 }
 
 impl From<RpcResponse> for GetBlockCommitmentResponse {

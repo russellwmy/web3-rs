@@ -27,9 +27,9 @@ impl Into<RpcRequest> for GetVersionRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetVersionResponse {
     #[serde(rename = "solana-core")]
-    solana_core: String,
+    pub solana_core: String,
     #[serde(rename = "feature-core")]
-    feature_set: Option<String>,
+    pub feature_set: Option<String>,
 }
 
 impl From<RpcResponse> for GetVersionResponse {

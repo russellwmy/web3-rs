@@ -1,9 +1,8 @@
 use crate::core::{RpcRequest, RpcResponse};
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetBlockTimeRequest {
-    slot: u64,
+    pub slot: u64,
 }
 
 impl GetBlockTimeRequest {

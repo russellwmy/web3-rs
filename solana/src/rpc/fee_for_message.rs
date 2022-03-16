@@ -1,40 +1,43 @@
-use super::Context;
-
 use {
-    super::types::Commitment,
+    super::{types::Commitment, Context},
     crate::core::{RpcRequest, RpcResponse},
+    solana_sdk::message::Message,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
+pub struct GetFeeForMessageRequestConfig {
+    pub commitment: Option<Commitment>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetFeeForMessageRequest {
-    message: String,
+    pub message: Message,
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub config: Option<GetFeeForMessageRequestConfig>,
 }
 
 impl GetFeeForMessageRequest {
-    pub fn new(message: &str) -> Self {
+    pub fn new(message: Message) -> Self {
         Self {
-            message: message.to_owned(),
-            commitment: None,
+            message,
+            config: None,
         }
     }
-    pub fn new_with_commitment(message: &str, commitment: Commitment) -> Self {
+    pub fn new_with_config(message: Message, config: GetFeeForMessageRequestConfig) -> Self {
         Self {
-            message: message.to_owned(),
-            commitment: Some(commitment),
+            message,
+            config: Some(config),
         }
     }
 }
 
 impl Into<serde_json::Value> for GetFeeForMessageRequest {
     fn into(self) -> serde_json::Value {
-        match self.commitment {
-            Some(commitment) => {
-                serde_json::json!([self.message, { "commitment":commitment.to_string() }])
-            }
-            None => serde_json::json!([self.message]),
+        let message = base64::encode(self.message.serialize());
+
+        match self.config {
+            Some(config) => serde_json::json!([message, config]),
+            None => serde_json::json!([message]),
         }
     }
 }
@@ -53,8 +56,8 @@ pub struct FeeForMessageValue(Option<u64>);
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetFeeForMessageResponse {
-    context: Context,
-    value: FeeForMessageValue,
+    pub context: Context,
+    pub value: FeeForMessageValue,
 }
 
 impl From<RpcResponse> for GetFeeForMessageResponse {

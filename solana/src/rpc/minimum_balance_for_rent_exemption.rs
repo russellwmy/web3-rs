@@ -4,32 +4,40 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GetMinimumBalanceForRentExemptionRequestConfig {
+    pub commitment: Option<Commitment>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetMinimumBalanceForRentExemptionRequest {
-    data_length: usize,
+    pub data_length: usize,
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub config: Option<GetMinimumBalanceForRentExemptionRequestConfig>,
 }
 
 impl GetMinimumBalanceForRentExemptionRequest {
     pub fn new(data_length: usize) -> Self {
         Self {
             data_length,
-            commitment: None,
+            config: None,
         }
     }
-    pub fn new_with_commitment(data_length: usize, commitment: Commitment) -> Self {
+    pub fn new_with_config(
+        data_length: usize,
+        config: GetMinimumBalanceForRentExemptionRequestConfig,
+    ) -> Self {
         Self {
             data_length,
-            commitment: Some(commitment),
+            config: Some(config),
         }
     }
 }
 
 impl Into<serde_json::Value> for GetMinimumBalanceForRentExemptionRequest {
     fn into(self) -> serde_json::Value {
-        match self.commitment {
-            Some(commitment) => {
-                serde_json::json!([self.data_length, {"commitment": commitment.to_string()}])
+        match self.config {
+            Some(config) => {
+                serde_json::json!([self.data_length, config])
             }
             None => serde_json::json!([self.data_length]),
         }

@@ -5,7 +5,6 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetClusterNodesRequest {}
 
 impl GetClusterNodesRequest {
@@ -33,13 +32,13 @@ impl Into<RpcRequest> for GetClusterNodesRequest {
 #[serde(rename_all = "camelCase")]
 pub struct ClusterNode {
     #[serde(deserialize_with = "deserialize_public_key", rename = "pubkey")]
-    public_key: Pubkey,
-    gossip: Option<String>,
-    tpu: Option<String>,
-    rpc: Option<String>,
-    version: Option<String>,
-    feature_set: Option<u32>,
-    shred_version: Option<u16>,
+    pub public_key: Pubkey,
+    pub gossip: Option<String>,
+    pub tpu: Option<String>,
+    pub rpc: Option<String>,
+    pub version: Option<String>,
+    pub feature_set: Option<u32>,
+    pub shred_version: Option<u16>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

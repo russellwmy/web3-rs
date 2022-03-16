@@ -5,26 +5,31 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GetLatestBlockhashRequestConfig {
+    pub commitment: Option<Commitment>,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetLatestBlockhashRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub config: Option<GetLatestBlockhashRequestConfig>,
 }
 
 impl GetLatestBlockhashRequest {
     pub fn new() -> Self {
-        Self { commitment: None }
+        Self { config: None }
     }
-    pub fn new_with_config(commitment: Commitment) -> Self {
+    pub fn new_with_config(config: GetLatestBlockhashRequestConfig) -> Self {
         Self {
-            commitment: Some(commitment),
+            config: Some(config),
         }
     }
 }
 
 impl Into<serde_json::Value> for GetLatestBlockhashRequest {
     fn into(self) -> serde_json::Value {
-        match self.commitment {
-            Some(commitment) => serde_json::json!([commitment]),
+        match self.config {
+            Some(config) => serde_json::json!([config]),
             None => serde_json::Value::Null,
         }
     }
@@ -48,7 +53,6 @@ pub struct LatestBlockhashValue {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetLatestBlockhashResponse {
     pub context: Context,
     pub value: LatestBlockhashValue,

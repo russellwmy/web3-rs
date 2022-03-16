@@ -1,5 +1,3 @@
-use std::str::FromStr;
-
 use {
     super::{serde_utils::deserialize_public_key, types::Commitment, DataSlice, Encoding},
     crate::core::{RpcRequest, RpcResponse},
@@ -8,37 +6,35 @@ use {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetProgramAccountsConfig {
+pub struct GetProgramAccountsRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
-    encoding: Encoding,
+    pub commitment: Option<Commitment>,
+    pub encoding: Encoding,
     #[serde(skip_serializing_if = "Option::is_none")]
-    data_slice: Option<DataSlice>,
+    pub data_slice: Option<DataSlice>,
+    // TODO: Convert this to a struct
     #[serde(skip_serializing_if = "Option::is_none")]
-    filters: Option<serde_json::Value>,
+    pub filters: Option<serde_json::Value>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    with_context: Option<DataSlice>,
+    pub with_context: Option<DataSlice>,
 }
+
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetProgramAccountsRequest {
-    public_key: Pubkey,
+    pub public_key: Pubkey,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetProgramAccountsConfig>,
+    pub config: Option<GetProgramAccountsRequestConfig>,
 }
 
 impl GetProgramAccountsRequest {
-    pub fn new(public_key: &str) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-
+    pub fn new(public_key: Pubkey) -> Self {
         Self {
             public_key,
             config: None,
         }
     }
 
-    pub fn new_with_config(public_key: &str, config: GetProgramAccountsConfig) -> Self {
-        let public_key = Pubkey::from_str(public_key).expect("invalid public key");
-
+    pub fn new_with_config(public_key: Pubkey, config: GetProgramAccountsRequestConfig) -> Self {
         Self {
             public_key,
             config: Some(config),
@@ -69,19 +65,20 @@ impl Into<RpcRequest> for GetProgramAccountsRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct ProgramAccountsValueItem {
-    lamports: u64,
+    pub lamports: u64,
     #[serde(deserialize_with = "deserialize_public_key")]
-    owner: Pubkey,
-    data: serde_json::Value,
-    executable: bool,
-    rent_epoch: u64,
+    pub owner: Pubkey,
+    // TODO: Convert this to a struct
+    pub data: serde_json::Value,
+    pub executable: bool,
+    pub rent_epoch: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct ProgramAccountsValue {
     #[serde(deserialize_with = "deserialize_public_key")]
-    pubkey: Pubkey,
-    account: ProgramAccountsValueItem,
+    pub pubkey: Pubkey,
+    pub account: ProgramAccountsValueItem,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

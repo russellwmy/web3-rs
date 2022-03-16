@@ -2,37 +2,30 @@ use {
     super::{types::Commitment, Context},
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::pubkey::Pubkey,
-    std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetTokenAccountBalanceRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub commitment: Option<Commitment>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
 pub struct GetTokenAccountBalanceRequest {
-    account: Pubkey,
+    pub account: Pubkey,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetTokenAccountBalanceRequestConfig>,
+    pub config: Option<GetTokenAccountBalanceRequestConfig>,
 }
 
 impl GetTokenAccountBalanceRequest {
-    pub fn new(account: &str) -> Self {
-        let account = Pubkey::from_str(account).expect("invalid public key");
-
+    pub fn new(account: Pubkey) -> Self {
         Self {
             account,
             config: None,
         }
     }
 
-    pub fn new_with_config(account: &str, config: GetTokenAccountBalanceRequestConfig) -> Self {
-        let account = Pubkey::from_str(account).expect("invalid public key");
-
+    pub fn new_with_config(account: Pubkey, config: GetTokenAccountBalanceRequestConfig) -> Self {
         Self {
             account,
             config: Some(config),
@@ -63,16 +56,16 @@ impl Into<RpcRequest> for GetTokenAccountBalanceRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct TokenAccountBalanceResponseValue {
-    amount: String,
-    decimals: u8,
-    ui_amount: Option<u64>,
-    ui_amount_string: Option<String>,
+    pub amount: String,
+    pub decimals: u8,
+    pub ui_amount: Option<u64>,
+    pub ui_amount_string: Option<String>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetTokenAccountBalanceResponse {
-    context: Context,
-    value: TokenAccountBalanceResponseValue,
+    pub context: Context,
+    pub value: TokenAccountBalanceResponseValue,
 }
 
 impl From<RpcResponse> for GetTokenAccountBalanceResponse {

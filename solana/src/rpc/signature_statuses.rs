@@ -2,40 +2,32 @@ use {
     super::{types::Commitment, Context},
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::signature::Signature,
-    std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetSignatureStatusesConfig {
-    search_transaction_history: bool,
+pub struct GetSignatureStatusesRequestConfig {
+    pub search_transaction_history: bool,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSignatureStatusesRequest {
-    signatures: Vec<Signature>,
+    pub signatures: Vec<Signature>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetSignatureStatusesConfig>,
+    pub config: Option<GetSignatureStatusesRequestConfig>,
 }
 
 impl GetSignatureStatusesRequest {
-    pub fn new(signatures: Vec<&str>) -> Self {
-        let signatures = signatures
-            .iter()
-            .map(|s| Signature::from_str(s).expect("invalid public key"))
-            .collect();
-
+    pub fn new(signatures: Vec<Signature>) -> Self {
         Self {
             signatures,
             config: None,
         }
     }
 
-    pub fn new_with_config(signatures: Vec<String>, config: GetSignatureStatusesConfig) -> Self {
-        let signatures = signatures
-            .iter()
-            .map(|s| Signature::from_str(s).expect("invalid public key"))
-            .collect();
-
+    pub fn new_with_config(
+        signatures: Vec<Signature>,
+        config: GetSignatureStatusesRequestConfig,
+    ) -> Self {
         Self {
             signatures,
             config: Some(config),
@@ -70,16 +62,17 @@ impl Into<RpcRequest> for GetSignatureStatusesRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct SignatureStatusesValue {
-    slot: u64,
-    confirmations: u64,
-    err: Option<serde_json::Value>,
-    confirmation_status: Option<Commitment>,
+    pub slot: u64,
+    pub confirmations: u64,
+    // TODO: Convert this to a struct
+    pub err: Option<serde_json::Value>,
+    pub confirmation_status: Option<Commitment>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetSignatureStatusesResponse {
-    context: Context,
-    value: Vec<Option<SignatureStatusesValue>>,
+    pub context: Context,
+    pub value: Vec<Option<SignatureStatusesValue>>,
 }
 
 impl From<RpcResponse> for GetSignatureStatusesResponse {

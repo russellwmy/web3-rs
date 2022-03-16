@@ -4,28 +4,33 @@ use {
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GetEpochInfoRequestConfig {
+    pub commitment: Commitment,
+}
+
+#[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetEpochInfoRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub config: Option<GetEpochInfoRequestConfig>,
 }
 
 impl GetEpochInfoRequest {
     pub fn new() -> Self {
-        Self { commitment: None }
+        Self { config: None }
     }
-    pub fn new_with_commitment(commitment: Commitment) -> Self {
+    pub fn new_with_config(config: GetEpochInfoRequestConfig) -> Self {
         Self {
-            commitment: Some(commitment),
+            config: Some(config),
         }
     }
 }
 
 impl Into<serde_json::Value> for GetEpochInfoRequest {
     fn into(self) -> serde_json::Value {
-        match self.commitment {
-            Some(_) => serde_json::json!([self]),
-            None => serde_json::Value::Null,
+        match self.config {
+            Some(config) => serde_json::json!([config]),
+            None => serde_json::json!([]),
         }
     }
 }
@@ -42,12 +47,12 @@ impl Into<RpcRequest> for GetEpochInfoRequest {
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetEpochInfoResponse {
-    absolute_slot: u64,
-    block_height: u64,
-    epoch: u64,
-    slot_index: u64,
-    slots_in_epoch: u64,
-    transaction_count: Option<u64>,
+    pub absolute_slot: u64,
+    pub block_height: u64,
+    pub epoch: u64,
+    pub slot_index: u64,
+    pub slots_in_epoch: u64,
+    pub transaction_count: Option<u64>,
 }
 
 impl From<RpcResponse> for GetEpochInfoResponse {

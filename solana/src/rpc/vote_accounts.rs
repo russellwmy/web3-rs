@@ -7,27 +7,27 @@ use {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetVoteAccountsConfig {
+pub struct GetVoteAccountsRequestConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
-    commitment: Option<Commitment>,
+    pub commitment: Option<Commitment>,
     #[serde(skip_serializing_if = "Option::is_none", rename = "votePubkey")]
-    vote_public_key: Option<Pubkey>,
+    pub vote_public_key: Option<Pubkey>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    keep_unstaked_delinquents: Option<bool>,
+    pub keep_unstaked_delinquents: Option<bool>,
     #[serde(skip_serializing_if = "Option::is_none")]
-    delinquent_slot_distance: Option<u64>,
+    pub delinquent_slot_distance: Option<u64>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetVoteAccountsRequest {
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetVoteAccountsConfig>,
+    pub config: Option<GetVoteAccountsRequestConfig>,
 }
 
 impl GetVoteAccountsRequest {
     pub fn new() -> Self {
         Self { config: None }
     }
-    pub fn new_with_config(config: GetVoteAccountsConfig) -> Self {
+    pub fn new_with_config(config: GetVoteAccountsRequestConfig) -> Self {
         Self {
             config: Some(config),
         }
@@ -56,21 +56,22 @@ impl Into<RpcRequest> for GetVoteAccountsRequest {
 #[serde(rename_all = "camelCase")]
 pub struct VoteAccountsValue {
     #[serde(deserialize_with = "deserialize_public_key", rename = "votePubkey")]
-    vote_public_key: Pubkey,
+    pub vote_public_key: Pubkey,
     #[serde(deserialize_with = "deserialize_public_key", rename = "nodePubkey")]
-    node_public_key: Pubkey,
-    activated_stake: u64,
-    epoch_vote_account: bool,
-    commission: f64,
-    last_vote: u64,
-    root_slot: u64,
-    epoch_credits: Vec<(u64, u64, u64)>,
+    pub node_public_key: Pubkey,
+    pub activated_stake: u64,
+    pub epoch_vote_account: bool,
+    pub commission: f64,
+    pub last_vote: u64,
+    pub root_slot: u64,
+    // TODO: Convert this to a struct
+    pub epoch_credits: Vec<(u64, u64, u64)>,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GetVoteAccountsResponse {
-    current: Vec<VoteAccountsValue>,
-    delinquent: Vec<VoteAccountsValue>,
+    pub current: Vec<VoteAccountsValue>,
+    pub delinquent: Vec<VoteAccountsValue>,
 }
 
 impl From<RpcResponse> for GetVoteAccountsResponse {
