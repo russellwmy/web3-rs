@@ -23,22 +23,33 @@ mod latest_blockhash;
 mod leader_schedule;
 mod max_retransmit_slot;
 mod minimum_balance_for_rent_exemption;
+mod minimum_ledger_slot;
 mod multiple_accounts;
 mod program_accounts;
 mod recent_performance_samples;
+mod request_airdrop;
+mod send_transaction;
 mod serde_utils;
 mod signature_statuses;
 mod signatures_for_address;
+mod simulate_transaction;
 mod slot;
 mod slot_leader;
 mod slot_leaders;
 mod stake_activation;
 mod supply;
 mod token_account_balance;
+mod token_accounts_by_delegate;
+mod token_accounts_by_owner;
+mod token_largest_accounts;
+mod transaction;
 mod types;
+mod validate_blockhash;
+mod version;
+mod vote_accounts;
 
 pub use {
-    account_info::{AccountInfoValue, GetAccountInfoRequest, GetAccountInfoResponse},
+    account_info::{GetAccountInfoRequest, GetAccountInfoRsponse},
     balance::{GetBalanceRequest, GetBalanceResponse},
     block_commitment::{GetBlockCommitmentRequest, GetBlockCommitmentResponse},
     block_height::{GetBlockHeightRequest, GetBlockHeightResponse},
@@ -67,13 +78,17 @@ pub use {
     minimum_balance_for_rent_exemption::{
         GetMinimumBalanceForRentExemptionRequest, GetMinimumBalanceForRentExemptionResponse,
     },
+    minimum_ledger_slot::{MinimumLedgerSlotRequest, MinimumLedgerSlotResponse},
     multiple_accounts::{GetMultipleAccountsRequest, GetMultipleAccountsResponse},
     program_accounts::{GetProgramAccountsRequest, GetProgramAccountsResponse},
     recent_performance_samples::{
         GetRecentPerformanceSamplesRequest, GetRecentPerformanceSamplesResponse,
     },
+    request_airdrop::{RequestAirdropRequest, RequestAirdropResponse},
+    send_transaction::{SendTransactionRequest, SendTransactionResponse},
     signature_statuses::{GetSignatureStatusesRequest, GetSignatureStatusesResponse},
     signatures_for_address::{GetSignaturesForAddressRequest, GetSignaturesForAddressResponse},
+    simulate_transaction::{SimulateTransactionRequest, SimulateTransactionResponse},
     slot::{GetSlotRequest, GetSlotResponse},
     slot_leader::{GetSlotLeaderRequest, GetSlotLeaderResponse},
     slot_leaders::{GetSlotLeadersRequest, GetSlotLeadersResponse},
@@ -81,12 +96,21 @@ pub use {
     stake_activation::{GetStakeActivationRequest, GetStakeActivationResponse},
     supply::{GetSupplyRequest, GetSupplyResponse},
     token_account_balance::{GetTokenAccountBalanceRequest, GetTokenAccountBalanceResponse},
+    token_accounts_by_delegate::{
+        GetTokenAccountsByDelegateRequest, GetTokenAccountsByDelegateResponse,
+    },
+    token_accounts_by_owner::{GetTokenAccountsByOwnerRequest, GetTokenAccountsByOwnerResponse},
+    token_largest_accounts::{GetTokenLargestAccountsRequest, GetTokenLargestAccountsResponse},
+    transaction::{GetTransactionRequest, GetTransactionResponse},
+    validate_blockhash::{ValidateBlockhashRequest, ValidateBlockhashResponse},
+    version::{GetVersionRequest, GetVersionResponse},
+    vote_accounts::{GetVoteAccountsRequest, GetVoteAccountsResponse},
 };
 
 use serde::Deserialize;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "lowercase")]
+#[serde(rename_all = "camelCase")]
 pub enum Encoding {
     JsonParsed,
     Base64,

@@ -43,15 +43,15 @@ impl Into<RpcRequest> for GetLatestBlockhashRequest {
 #[serde(rename_all = "camelCase")]
 pub struct LatestBlockhashValue {
     #[serde(deserialize_with = "deserialize_hash")]
-    blockhash: Hash,
-    last_valid_block_height: u64,
+    pub blockhash: Hash,
+    pub last_valid_block_height: u64,
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 pub struct GetLatestBlockhashResponse {
-    context: Context,
-    value: LatestBlockhashValue,
+    pub context: Context,
+    pub value: LatestBlockhashValue,
 }
 
 impl From<RpcResponse> for GetLatestBlockhashResponse {

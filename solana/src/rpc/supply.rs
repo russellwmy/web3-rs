@@ -1,7 +1,5 @@
 use std::str::FromStr;
 
-use serde_json::from_str;
-
 use {
     super::{types::Commitment, Context},
     crate::core::{RpcRequest, RpcResponse},

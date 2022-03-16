@@ -1,8 +1,6 @@
 use {
-    super::{types::Commitment, Context},
+    super::types::Commitment,
     crate::core::{RpcRequest, RpcResponse},
-    solana_sdk::signature::Signature,
-    std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

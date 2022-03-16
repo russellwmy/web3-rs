@@ -30,13 +30,6 @@ where
     Ok(Hash::from_str(s.as_str()).unwrap())
 }
 
-pub fn serialize_signature<S>(signature: &Option<Signature>, s: S) -> Result<S::Ok, S::Error>
-where
-    S: Serializer,
-{
-    s.serialize_str(signature.unwrap().to_string().as_str())
-}
-
 pub fn deserialize_signature<'de, D>(deserializer: D) -> Result<Signature, D::Error>
 where
     D: Deserializer<'de>,

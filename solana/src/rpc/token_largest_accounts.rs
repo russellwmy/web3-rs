@@ -1,26 +1,24 @@
 use {
-    super::types::Commitment,
+    super::serde_utils::deserialize_public_key,
+    super::{types::Commitment, Context},
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::pubkey::Pubkey,
     std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-#[serde(rename_all = "camelCase")]
-pub struct GetStakeActivationConfig {
+pub struct GetTokenLargestAccountsConfig {
     #[serde(skip_serializing_if = "Option::is_none")]
     commitment: Option<Commitment>,
-    #[serde(skip_serializing_if = "Option::is_none")]
-    epoch: Option<u64>,
 }
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct GetStakeActivationRequest {
+pub struct GetTokenLargestAccountsRequest {
     public_key: Pubkey,
     #[serde(skip_serializing_if = "Option::is_none")]
-    config: Option<GetStakeActivationConfig>,
+    config: Option<GetTokenLargestAccountsConfig>,
 }
 
-impl GetStakeActivationRequest {
+impl GetTokenLargestAccountsRequest {
     pub fn new(public_key: &str) -> Self {
         let public_key = Pubkey::from_str(public_key).expect("invalid public key");
 
@@ -29,8 +27,7 @@ impl GetStakeActivationRequest {
             config: None,
         }
     }
-
-    pub fn new_with_config(public_key: &str, config: GetStakeActivationConfig) -> Self {
+    pub fn new_with_config(public_key: &str, config: GetTokenLargestAccountsConfig) -> Self {
         let public_key = Pubkey::from_str(public_key).expect("invalid public key");
 
         Self {
@@ -40,7 +37,7 @@ impl GetStakeActivationRequest {
     }
 }
 
-impl Into<serde_json::Value> for GetStakeActivationRequest {
+impl Into<serde_json::Value> for GetTokenLargestAccountsRequest {
     fn into(self) -> serde_json::Value {
         let public_key = self.public_key.to_string();
 
@@ -51,9 +48,9 @@ impl Into<serde_json::Value> for GetStakeActivationRequest {
     }
 }
 
-impl Into<RpcRequest> for GetStakeActivationRequest {
+impl Into<RpcRequest> for GetTokenLargestAccountsRequest {
     fn into(self) -> RpcRequest {
-        let mut request = RpcRequest::new("getStakeActivation");
+        let mut request = RpcRequest::new("getTokenLargestAccounts");
         let params = self.into();
 
         request.params(params).clone()
@@ -61,13 +58,22 @@ impl Into<RpcRequest> for GetStakeActivationRequest {
 }
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
-pub struct GetStakeActivationResponse {
-    state: String,
-    active: u64,
-    inactive: u64,
+pub struct TokenLargestAccountsValue {
+    #[serde(deserialize_with = "deserialize_public_key")]
+    address: Pubkey,
+    amount: String,
+    decimals: u8,
+    ui_amount: Option<u64>,
+    ui_amount_string: String,
 }
 
-impl From<RpcResponse> for GetStakeActivationResponse {
+#[derive(Debug, Clone, Serialize, Deserialize)]
+pub struct GetTokenLargestAccountsResponse {
+    context: Context,
+    value: Vec<TokenLargestAccountsValue>,
+}
+
+impl From<RpcResponse> for GetTokenLargestAccountsResponse {
     fn from(response: RpcResponse) -> Self {
         serde_json::from_value(response.result).unwrap()
     }
