@@ -1,26 +1,13 @@
-# web3-rs (WIP)
-Rust implementation of web3 library for Solana
+# Web3 SDK for blockchain platforms
+A pure Rust Web3 implementation for blockchain platforms.
 
-# Basic Usage
-```rust
-extern crate web3_rs as web3;
+## Supported blockchain platforms
+### Solana
+- Branch: main
+- Status: Unstable
+- Progress: Rpc ndpoints are fully implemented
 
-use web3::{
-    core::{Provider, RcpClient},
-    solana,
-};
-
-let provider = Provider::new_http_provider("https://api.devnet.solana.com".into());
-let client = RcpClient::new(provider);
-let request = solana::rpc::GetLargestAccountsRequest::new().into();
-
-match client.send(request).await {
-    Ok(response) => {
-        let result = solana::rpc::GetLargestAccountsResponse::from(response);
-        log::info!("{:?}", result);
-    }
-    Err(error) => {
-        log::warn!("{:?}", error);
-    }
-};
-```
+### Near Protocol
+- Branch: [`near`](https://github.com/russellwmy/web3-rs/tree/near)
+- Status: Unstable
+- Progress: Rpc ndpoints are partially implemented
