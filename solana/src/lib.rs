@@ -5,5 +5,4 @@ extern crate serde_derive;
 mod constants;
 pub mod rpc;
 
-pub use solana_sdk as sdk;
-pub use web3_core as core;
+pub use {solana_sdk as sdk, web3_core as core};

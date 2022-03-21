@@ -1,9 +1,6 @@
-use solana_sdk::signature::Signature;
-
 use {
     serde::{Deserialize, Deserializer, Serializer},
-    solana_sdk::hash::Hash,
-    solana_sdk::pubkey::Pubkey,
+    solana_sdk::{hash::Hash, pubkey::Pubkey, signature::Signature},
     std::str::FromStr,
 };
 

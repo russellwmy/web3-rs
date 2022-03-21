@@ -1,8 +1,7 @@
 use {
     super::{types::Commitment, Encoding},
     crate::core::{RpcRequest, RpcResponse},
-    solana_sdk::signature::Signature,
-    solana_sdk::transaction::Transaction,
+    solana_sdk::{signature::Signature, transaction::Transaction},
     std::str::FromStr,
 };
 

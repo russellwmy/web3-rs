@@ -1,9 +1,7 @@
-use solana_sdk::signature::Signature;
-
 use {
     super::{serde_utils::deserialize_signature, types::Commitment},
     crate::core::{RpcRequest, RpcResponse},
-    solana_sdk::pubkey::Pubkey,
+    solana_sdk::{pubkey::Pubkey, signature::Signature},
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

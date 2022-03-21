@@ -1,9 +1,8 @@
-use std::str::FromStr;
-
 use {
     super::types::Commitment,
     crate::core::{RpcRequest, RpcResponse},
     solana_sdk::pubkey::Pubkey,
+    std::str::FromStr,
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]

@@ -49,6 +49,7 @@ mod validate_blockhash;
 mod version;
 mod vote_accounts;
 
+use serde::Deserialize;
 pub use {
     account_info::{GetAccountInfoRequest, GetAccountInfoRequestConfig, GetAccountInfoRsponse},
     balance::{GetBalanceRequest, GetBalanceRequestConfig, GetBalanceResponse},
@@ -154,8 +155,6 @@ pub use {
         GetVoteAccountsRequest, GetVoteAccountsRequestConfig, GetVoteAccountsResponse,
     },
 };
-
-use serde::Deserialize;
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]

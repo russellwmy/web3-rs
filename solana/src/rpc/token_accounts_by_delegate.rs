@@ -1,8 +1,7 @@
 use {
     super::{types::Commitment, Context, DataSlice, Encoding},
     crate::core::{RpcRequest, RpcResponse},
-    solana_sdk::account::Account,
-    solana_sdk::pubkey::Pubkey,
+    solana_sdk::{account::Account, pubkey::Pubkey},
 };
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
