@@ -66,12 +66,12 @@ pub struct AccountInfoValue {
 
 #[derive(Debug, Clone, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
-pub struct GetAccountInfoRsponse {
+pub struct GetAccountInfoResponse {
     pub context: Context,
     pub value: AccountInfoValue,
 }
 
-impl From<RpcResponse> for GetAccountInfoRsponse {
+impl From<RpcResponse> for GetAccountInfoResponse {
     fn from(response: RpcResponse) -> Self {
         serde_json::from_value(response.result).unwrap()
     }
