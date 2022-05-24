@@ -51,7 +51,7 @@ mod vote_accounts;
 
 use serde::Deserialize;
 pub use {
-    account_info::{GetAccountInfoRequest, GetAccountInfoRequestConfig, GetAccountInfoRsponse},
+    account_info::{GetAccountInfoRequest, GetAccountInfoRequestConfig, GetAccountInfoResponse},
     balance::{GetBalanceRequest, GetBalanceRequestConfig, GetBalanceResponse},
     block_commitment::{GetBlockCommitmentRequest, GetBlockCommitmentResponse},
     block_height::{GetBlockHeightRequest, GetBlockHeightRequestConfig, GetBlockHeightResponse},
