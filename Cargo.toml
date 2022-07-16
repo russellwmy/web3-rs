@@ -7,6 +7,7 @@ author = ["Russell Wong"]
 [dependencies]
 web3-core = { path = "./core" }
 solana = { path = "./solana" }
+near = { path = "./near" }
 
 [workspace]
-members = ["core", "solana"]
+members = ["core", "solana", "near"]
