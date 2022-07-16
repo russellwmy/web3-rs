@@ -2,9 +2,7 @@
 name = "solana"
 version = "0.1.0"
 edition = "2021"
-author = ["Russell Wong"]
-
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+authors = ["Russell Wong"]
 
 [dependencies]
 base64 = "0.13"

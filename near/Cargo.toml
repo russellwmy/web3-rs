@@ -2,7 +2,7 @@
 name = "near"
 version = "0.1.0"
 edition = "2021"
-author = ["Russell Wong"]
+authors = ["Russell Wong"]
 
 [dependencies]
 base64 = "0.13.0"

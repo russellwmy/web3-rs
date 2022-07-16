@@ -2,12 +2,14 @@
 name = "web3-rs"
 version = "0.1.0"
 edition = "2021"
-author = ["Russell Wong"]
+authors = ["Russell Wong"]
 
 [dependencies]
 web3-core = { path = "./core" }
 solana = { path = "./solana" }
 near = { path = "./near" }
 
-[workspace]
-members = ["core", "solana", "near"]
+[features]
+default = ["near", "solana"]
+solana = []
+near = []
